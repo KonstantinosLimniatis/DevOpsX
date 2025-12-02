@@ -38,3 +38,97 @@ spring.datasource.username=
 spring.datasource.password=
 ```
 ### 3. Run the Application
+---------------------------------------------------------------------------------------------
+# DevOpsX – Real Estate Management System  
+Spring Boot | Docker | PostgreSQL (Render) | Maven
+
+## 📌 Overview  
+Το DevOpsX είναι ένα Real Estate Management System βασισμένο σε Spring Boot, το οποίο τρέχει πλήρως σε Docker και συνδέεται σε PostgreSQL database που φιλοξενείται στο Render.  
+
+Το project περιλαμβάνει:
+- Spring Boot Application
+- Cloud PostgreSQL (Render)
+- Docker containerization
+- Maven build system
+- Git version control
+
+---
+
+# 🛠️ Τεχνολογίες & Εργαλεία που χρησιμοποιήθηκαν
+
+## 1️⃣ **Java (OpenJDK 17 ή 21)**
+Απαιτείται για να τρέξει το Spring Boot project.
+
+**Εγκατάσταση σε Linux (Ubuntu):**
+```bash
+sudo apt install openjdk-17-jdk
+
+Maven
+sudo apt install maven
+mvn -v
+
+Docker
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+sudo apt install docker-compose
+
+sudo apt install git
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: realestate-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ds-2025
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-YOUR-RENDER-DB:5432/YOUR_DB?sslmode=require
+      SPRING_DATASOURCE_USERNAME: dbuser
+      SPRING_DATASOURCE_PASSWORD: yourpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+
+1️⃣ Build τοπικά (προαιρετικό)
+mvn clean package -DskipTests
+
+2️⃣ Τρέξιμο μόνο με Docker
+docker-compose up --build
+
+3️⃣ Τερματισμός
+docker-compose down
+
+
+📥 Πώς κατεβάζεις το project σε άλλο laptop
+1️⃣ Κατέβασε το repository
+git clone https://github.com/KonstantinosLimniatis/DevOpsX.git
+
+2️⃣ Μπες στον φάκελο
+cd DevOpsX
+
+3️⃣ Τρέξε το project με Docker
+docker-compose up --build
+
+
