@@ -131,4 +131,3 @@ cd DevOpsX
 3️⃣ Τρέξε το project με Docker
 docker-compose up --build
 
-
