@@ -1,5 +1,5 @@
 # Real Estate Management System
-## Overview 
+## Overview
 This project is a Real Estate Management System
 that allows owners to create real estates and manage rental requests
 while users can search for real estates and make rental requests to them.
